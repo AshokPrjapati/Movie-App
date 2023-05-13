@@ -7,7 +7,7 @@ const API_KEY = '5005d6bc';
 export const fetchMovieData = async (query = "ashok", page = 1) => {
     try {
         const response = await axios.get(`/?apikey=${API_KEY}&type=movie&plot=full&s=${query}&page=${page}`);
-        console.log(response)
+        // console.log(response)
         return response.data;
     } catch (error) {
         console.log(error);

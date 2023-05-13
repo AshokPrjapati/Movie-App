@@ -3,6 +3,8 @@ import MovieCard from "../components/MovieCard";
 import { fetchMovieData } from "../api";
 import Searchbar from "../components/Searchbar";
 import { useState } from "react";
+import Loader from "../components/Loader";
+import Pagination from "../components/Pagination.jsx";
 
 const Movie = () => {
 
@@ -18,15 +20,29 @@ const Movie = () => {
         refetchOnWindowFocus: false,
     });
 
+    // set query from input box
     const handleQuery = (text) => setQuery(currentText => currentText = text);
+
+    // update the page with current page value
+    const handlePage = (value) => {
+        setPage(value);
+    }
 
     return (
         <>
+            {/* Searchbar */}
             <Searchbar handleQuery={handleQuery} />
-            {isLoading ? <h1>...Loading</h1> : error ? <pre>{JSON.stringify(error)}</pre> : <div className="movie_container">
-                {data?.Search?.map(movie => <MovieCard key={movie.imdbID} {...movie} />)}
-            </div>}
+            {/* Loading Indicator */}
+            {isLoading && <Loader />}
+            {/* Error Message */}
+            {error ? <pre>{JSON.stringify(error)}</pre> :
+                // Movie container
+                <div className="movie_container">
+                    {data?.Search?.map(movie => <MovieCard key={movie.imdbID} {...movie} />)}
+                </div>}
             {data?.Error && <h1 style={{ textAlign: "center" }}>{data?.Error}</h1>}
+            {/* Pagination */}
+            {data?.totalResults && <Pagination currentPage={page} handlePage={handlePage} total={data.totalResults} />}
         </>
     )
 }
