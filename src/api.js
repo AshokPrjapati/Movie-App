@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL = `http://www.omdbapi.com`;
+axios.defaults.baseURL = `https://www.omdbapi.com`;
 const API_KEY = '5005d6bc';
 
 
