@@ -2,14 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import MovieCard from "../components/MovieCard";
 import { fetchMovieData } from "../api";
 import Searchbar from "../components/Searchbar";
-import { useState } from "react";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination.jsx";
+import { useStore } from "zustand";
+import { movieStore } from '../store';
+
 
 const Movie = () => {
 
-    const [query, setQuery] = useState("random");
-    const [page, setPage] = useState(1)
+    const { query, page } = useStore(movieStore);
 
     const { isLoading, error, data } = useQuery({
         queryKey: ["movies", query, page],
@@ -20,18 +21,10 @@ const Movie = () => {
         refetchOnWindowFocus: false,
     });
 
-    // set query from input box
-    const handleQuery = (text) => setQuery(currentText => currentText = text);
-
-    // update the page with current page value
-    const handlePage = (value) => {
-        setPage(value);
-    }
-
     return (
         <>
             {/* Searchbar */}
-            <Searchbar handleQuery={handleQuery} />
+            <Searchbar />
             {/* Loading Indicator */}
             {isLoading && <Loader />}
             {/* Error Message */}
@@ -42,7 +35,7 @@ const Movie = () => {
                 </div>}
             {data?.Error && <h1 style={{ textAlign: "center" }}>{data?.Error}</h1>}
             {/* Pagination */}
-            {data?.totalResults && <Pagination currentPage={page} handlePage={handlePage} total={data.totalResults} />}
+            {data?.totalResults && <Pagination total={data.totalResults} />}
         </>
     )
 }

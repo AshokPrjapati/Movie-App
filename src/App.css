@@ -54,7 +54,7 @@
 }
 
 .movie_card:hover {
-    scale: 1.1;
+    scale: 1.05;
 }
 
 .movie_card>img {
@@ -71,7 +71,6 @@
 
 .movie_name {
     font-size: 1.1rem;
-
 }
 
 .movie_name>span {

@@ -1,6 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { useStore } from 'zustand';
+import { movieStore } from '../store';
 
-const Pagination = ({ currentPage, handlePage, total }) => {
+
+const Pagination = ({ total }) => {
+    const { page, setPage } = useStore(movieStore);
 
     let totalPages = Math.ceil(total / 10); // 10 per page by deafault
     const btns = [];
@@ -8,15 +12,16 @@ const Pagination = ({ currentPage, handlePage, total }) => {
         btns.push(i);
     }
 
+    const handlePage = (value) => setPage(value); // update page with Zustand setPage function
 
     return (
         <div className='pagination'>
             {/* button for previous page */}
-            <button disabled={currentPage === 1} onClick={() => handlePage(currentPage - 1)}>Prev</button>
+            <button disabled={page === 1} onClick={() => handlePage(page - 1)}>Prev</button>
             {/* button to direct visit a specific page */}
-            {btns.length !== 0 && btns.map(btn => <button key={btn} className={currentPage === btn ? "active" : ""} onClick={() => handlePage(btn)}>{btn}</button>)}
+            {btns.length !== 0 && btns.map(btn => <button key={btn} className={page === btn ? "active" : ""} onClick={() => handlePage(btn)}>{btn}</button>)}
             {/* button for next page */}
-            <button disabled={currentPage === totalPages} onClick={() => handlePage(currentPage + 1)}>Next</button>
+            <button disabled={page === totalPages} onClick={() => handlePage(page + 1)}>Next</button>
         </div>
     )
 }
